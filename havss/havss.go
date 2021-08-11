@@ -8,10 +8,6 @@ import (
     poly  "DistributedKeyGen/polynomial"
     poly2d  "DistributedKeyGen/polynomial2d"
 )
-
-type havss struct {
-    id_dealer uint32
-}
 const (
     share_t = iota
     send_t = iota
@@ -22,6 +18,29 @@ const (
     reconstruct_share_t = iota
     //out = iota // ?
 )
+
+type signature struct {
+
+}
+type havss struct {
+    // This variable init by false and changes only
+    // Algorithm 1: line 27
+    success bool
+    id_dealer uint32
+
+    // for each commitment calculates hash by it (uint64)
+    // this hash of commitment is key ito map below
+    // for every hash exist own counter echo and ready messages
+    // these counters of echo and ready are value into map
+    echo_counters map[uint64]uint32
+    ready_counters map[uint64]uint32
+    // A_C from Algorithm 1: line 5
+    recovery_points map[uint64]pair
+    // B_C from Algorithm 1: line 5
+    share_points map[uint64]pair
+    // Sig_C from Algorithm 1: line 5
+    signatures map[uint64]uint64
+}
 func send (
     type_message uint,
     id_dealer uint32,
@@ -30,9 +49,22 @@ func send (
     share poly.Polynomial) error {
     return nil
     }
+type pair struct {
+    Point mcl.Fr
+    Sender_index uint64
+}
 func Create ( i uint32, secret mcl.Fr ) *havss {
     var h havss
+    h.success = false
     h.id_dealer = i
+    h.echo_counters = make(map[uint64]uint32)
+    h.ready_counters = make(map[uint64]uint32)
+    h.recovery_points = make(map[uint64]pair)
+    h.share_points = make(map[uint64]pair)
+    h.signatures = make(map[uint64]uint64)
+
+
+
     poly.Init()
     var commit = c.Create(*poly2d.Create())
     var rec_poly, err1 = poly2d.EvaluateX(2)
