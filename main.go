@@ -1,8 +1,11 @@
 package main
+
 import (
-    "DistributedKeyGen/havss"
+//    "fmt"
+    wdkg  "DistributedKeyGen/wdkg"
+
 )
 
 func main(){
-    havss_init()
+    wdkg.Initialization(5)
 }
