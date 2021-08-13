@@ -33,3 +33,4 @@ func EvaluateY(y uint64) (poly.Polynomial, error) {
     var coeff poly.Polynomial
     return coeff, nil
 }
+

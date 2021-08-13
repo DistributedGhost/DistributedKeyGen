@@ -2,6 +2,7 @@ package polynomial
 
 import (
   "fmt"
+  "encoding/binary"
   "github.com/alinush/go-mcl"
 )
 
@@ -42,4 +43,15 @@ func Init() {
     if err1 == nil {
         fmt.Println("Value p(...) = ", v)
     }
+}
+
+func (p Polynomial) ToBytes() []byte {
+    store_degree := make([]byte, 8)
+    binary.LittleEndian.PutUint64(store_degree, uint64(p.Degree))
+    var store_coeffs []byte
+    for i := uint64(0); i < p.Degree; i++ {
+        store_coeffs = append(store_coeffs, p.Coeff[i].Serialize()...)
+    }
+    store_coeffs = append(store_coeffs, store_degree...)
+    return store_coeffs
 }

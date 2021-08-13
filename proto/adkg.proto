@@ -1,0 +1,73 @@
+syntax = "proto3";
+package adkg;
+
+
+option go_package = "DistributedKeyGen/proto";
+
+message ShareHAVSS {
+    MessageType type_message = 1;
+    uint64 id_dealer = 2;
+    bytes secret = 3;
+    enum MessageType {
+        SHARE = 0;
+        SEND = 1;
+        ECHO = 2;
+        READY = 3;
+        SHARED = 4;
+        RECONSTRUCT = 5;
+        RECONSTRUCT_SHARE = 6;
+    }
+}
+
+message SendHAVSS {
+    MessageType type_message = 1;
+    uint64 id_dealer = 2;
+    bytes commitment = 3;
+    bytes recovery_poly = 4;
+    bytes share_poly = 5;
+    enum MessageType {
+        SHARE = 0;
+        SEND = 1;
+        ECHO = 2;
+        READY = 3;
+        SHARED = 4;
+        RECONSTRUCT = 5;
+        RECONSTRUCT_SHARE = 6;
+    }
+}
+
+message EchoHAVSS {
+    MessageType type_message = 1;
+    enum MessageType {
+        SHARE = 0;
+        SEND = 1;
+        ECHO = 2;
+        READY = 3;
+        SHARED = 4;
+        RECONSTRUCT = 5;
+        RECONSTRUCT_SHARE = 6;
+    }
+}
+
+message ReadyHAVSS {
+    MessageType type_message = 1;
+    enum MessageType {
+        SHARE = 0;
+        SEND = 1;
+        ECHO = 2;
+        READY = 3;
+        SHARED = 4;
+        RECONSTRUCT = 5;
+        RECONSTRUCT_SHARE = 6;
+    }
+}
+
+message ConsensusMessage {
+    oneof payload {
+        ShareHAVSS share = 1;
+        SendHAVSS send = 2;
+        EchoHAVSS echo = 3;
+        ReadyHAVSS ready = 4;
+    }
+    //reserved 7, 9 to 12;
+}
