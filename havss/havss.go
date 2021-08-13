@@ -49,7 +49,7 @@ type Havss struct {
 }
 
 func send(msg []byte, PORT string) error {
-        var CONNECT = "127.0.0.1:" + PORT
+        var CONNECT = "127.0.0.1:" + PORT 
         s, err := net.ResolveUDPAddr("udp4", CONNECT)
         c, err := net.DialUDP("udp4", nil, s)
         if err != nil {
